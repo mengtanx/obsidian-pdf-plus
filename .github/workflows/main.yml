@@ -1,0 +1,32 @@
+# .github/workflows/sync.yml
+name: Sync Fork from Upstream
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 每天 UTC 0 点自动同步（可根据需要调整）
+  workflow_dispatch:    # 允许手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: https://github.com/mengtanx/obsidian-pdf-plus
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/RyotaUshio/obsidian-pdf-plus.git
+          git fetch upstream
+
+      - name: Merge upstream changes
+        run: |
+          git checkout main # 或者是 `master`，视你仓库主分支而定
+          git merge upstream/main --allow-unrelated-histories || true
+
+      - name: Push changes
+        run: |
+          git push origin main
