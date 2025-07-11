@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: https://github.com/mengtanx/obsidian-pdf-plus
+          repository: mengtanx/obsidian-pdf-plus
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
